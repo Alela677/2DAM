@@ -75,7 +75,7 @@ public class LoginController {
 				this.stage.close();
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 		} else {

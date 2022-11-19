@@ -1,7 +1,6 @@
 package DAOS;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,22 +45,18 @@ public class UsuariosDAO {
 
 	}
 
-	public static Usuarios consultarUsuarios(String nombre, String password) {
+	public static Usuarios consultarUsuarios(String nombre1, String password1) {
+
+		Session sesino = sesion();
+
 		Usuarios nuevo = null;
-		Session sesion = sesion();
-		sesion.getTransaction().begin();
-		Query query = sesion.createQuery(
-				"SELECT nombre, password FROM Usuarios where nombre='" + nombre + "' AND  password=" + password + "");
+		Query query = sesino.createQuery("FROM Usuarios WHERE nombre = :nombre AND password= :password");
 
-		List<Usuarios> usuarios = query.list();
+		query.setParameter("nombre", nombre1);
+		query.setParameter("password", password1);
+		nuevo = (Usuarios) query.uniqueResult();
+		System.out.println(nuevo.toString());
 
-		for (Usuarios usuarios2 : usuarios) {
-
-			System.out.println(usuarios2.toString());
-
-		}
-		sesion.getTransaction().commit();
-		sesion.close();
 		return nuevo;
 
 	}

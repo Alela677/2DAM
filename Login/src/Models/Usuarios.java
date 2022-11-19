@@ -19,6 +19,9 @@ public class Usuarios {
 	@Column(name = "password")
 	private String password;
 	
+	public Usuarios() {
+		super();
+	}
 	
 	public Usuarios(int id , String nombre , String password) {
 		super();
@@ -27,13 +30,7 @@ public class Usuarios {
 		this.password = password;
 	}
 	
-	public Usuarios( String nombre , String password) {
-		super();
-		this.nombre = nombre;
-		this.password = password;
-	}
-	
-	
+
 	
 	public int getId() {
 		return id;
@@ -61,7 +58,7 @@ public class Usuarios {
 
 	@Override
 	public String toString() {
-		return "Usuarios [id=" + id + ", nombre=" + nombre + ", password=" + password + "]";
+		return "Usuarios [nombre=" + nombre + ", password=" + password + "]";
 	}
 	
 	
