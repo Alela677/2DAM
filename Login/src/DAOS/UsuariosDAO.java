@@ -15,25 +15,28 @@ public class UsuariosDAO {
 
 	public static void main(String[] args) {
 
+		 
 		ArrayList<Usuarios> user = new ArrayList<Usuarios>();
-		user.add(new Usuarios(2, "Luis", "1234"));
-		user.add(new Usuarios(3, "David", "1234"));
-		user.add(new Usuarios(4, "Maria", "1234"));
+		user.add(new Usuarios(1, "Luis", "1234"));
+		user.add(new Usuarios(2, "David", "1234"));
+		user.add(new Usuarios(3, "Maria", "1234"));
 
+//		introducirUsuarios(user);
 		consultarUsuarios("Maria", "1234");
 
+		
 	}
-
-	private static Session sesion() {
-		StandardServiceRegistry sr = new StandardServiceRegistryBuilder().configure().build();
-		SessionFactory sf = new MetadataSources(sr).buildMetadata().buildSessionFactory();
-		Session sesion = sf.openSession();
-		return sesion;
-
-	}
+//
+//	private static Session sesion() {
+//		StandardServiceRegistry sr = new StandardServiceRegistryBuilder().configure().build();
+//		SessionFactory sf = new MetadataSources(sr).buildMetadata().buildSessionFactory();
+//		Session sesion = sf.openSession();
+//		return sesion;
+//
+//	}
 
 	public static void introducirUsuarios(ArrayList<Usuarios> user) {
-		Session sesion = sesion();
+		Session sesion =HibernateUtil.getSession();
 		sesion.getTransaction().begin();
 
 		for (Usuarios usuarios : user) {
@@ -47,16 +50,19 @@ public class UsuariosDAO {
 
 	public static Usuarios consultarUsuarios(String nombre1, String password1) {
 
-		Session sesino = sesion();
-
-		Usuarios nuevo = null;
+		Session sesino = HibernateUtil.getSession();
+		sesino.getTransaction().begin();
+		
+		
+		System.out.println(nombre1 + password1);
 		Query query = sesino.createQuery("FROM Usuarios WHERE nombre = :nombre AND password= :password");
-
+		
 		query.setParameter("nombre", nombre1);
 		query.setParameter("password", password1);
-		nuevo = (Usuarios) query.uniqueResult();
+		Usuarios nuevo = (Usuarios) query.uniqueResult();
 		System.out.println(nuevo.toString());
-
+		sesino.getTransaction().commit();
+		sesino.close();
 		return nuevo;
 
 	}
