@@ -1,44 +1,57 @@
 package DAOS;
 
-import org.hibernate.HibernateException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.context.internal.ThreadLocalSessionContext;
 
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory = buildSessionFactory();
-
-	private static SessionFactory buildSessionFactory() {
-		try {
-			/**
-			 * The configuration object will hold all of our Hibernate specific properties.
-			 * So it's going to know how we want Hibernate to perform. Another purpose of
-			 * our configuration is to hold all of the mapping information.
-			 */
-			Configuration configuration = new Configuration();
-			configuration.configure();
-			// configuration.addAnnotatedClass(UserHibernateAPI.class);
-			/**
-			 * Need to pass in the configuration to the StandardServerRegistryBuilder() and
-			 * then that builder pattern invoke the build method and pass the
-			 * ServiceRegistry into the BuildSessionFactoryMethod and eventually we'll end
-			 * up with a SessionFactory.
-			 */
-			return configuration.buildSessionFactory(
-					new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("There was an error building the factory");
+	private static SessionFactory sessionFactory;
+	private static Session session;
+	
+	/**
+	 * M�todo que devuelve el objeto Session.
+	 * @return
+	 * <ul>
+	 * <li>Si la sesi�n no est� creada: la crea y la abre.</li> 
+	 * <li>Si la sesi�n est� creada: simplemente devuelve la sesi�n abierta.</li>
+	 * </ul>
+	 */
+	public static Session getSession() {
+		if (sessionFactory == null) {
+			session = getSessionFactory().openSession();
 		}
+				
+		return session;
 	}
 
 	/**
-	 * Provide access to the singleton sessionFactory so we create a public method.
-	 * This will provide the application with access to the singleton
+	 * M�todo que cierra el objeto Session de HibernateUtil y el SessionFactory
 	 */
-	public static SessionFactory getSessionFactory() {
+	public static void closeSession() {
+		Session session = ThreadLocalSessionContext.unbind(sessionFactory);
+		if (session != null) {
+			session.close();
+		}
+		closeSessionFactory();
+	}
+	
+	private static SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
+			StandardServiceRegistry sr = new StandardServiceRegistryBuilder().configure().build();
+			sessionFactory = new MetadataSources(sr).buildMetadata().buildSessionFactory();
+		}
 		return sessionFactory;
 	}
+
+	private static void closeSessionFactory() {
+		if ((sessionFactory != null) && (sessionFactory.isClosed() == false)) {
+			sessionFactory.close();
+		}
+	}
+
 }
