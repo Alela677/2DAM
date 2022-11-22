@@ -55,11 +55,12 @@ public class FicheroPropiedades {
 	}
 	
 	
-	public static String getWMaximo() {
+	public static int getWMaximo() {
 		try {
 			leerFichero = new FileInputStream(FICHERO);
 			propiedades.load(leerFichero);
-			String wMaximo = propiedades.getProperty(KEYWMAXIMO);
+			int wMaximo = Integer.parseInt(propiedades.getProperty(KEYWMAXIMO)); 
+			
 			return wMaximo;
 
 		} catch (FileNotFoundException e) {
@@ -68,15 +69,16 @@ public class FicheroPropiedades {
 		} catch (IOException e) {
 			System.out.println("ERROR: EN LA ENTRADA O EN LA SALIDA");
 		}
-		return null;
+		return 0;
 	}
 	
 	
-	public static String getWHaximo() {
+	public static int getHaximo() {
 		try {
 			leerFichero = new FileInputStream(FICHERO);
 			propiedades.load(leerFichero);
-			String wHaximo = propiedades.getProperty(KEYHMAXIMO);
+			int wHaximo = Integer.parseInt( propiedades.getProperty(KEYHMAXIMO));
+			
 			return wHaximo;
 
 		} catch (FileNotFoundException e) {
@@ -85,7 +87,7 @@ public class FicheroPropiedades {
 		} catch (IOException e) {
 			System.out.println("ERROR: EN LA ENTRADA O EN LA SALIDA");
 		}
-		return null;
+		return 0;
 	}
 
 }
