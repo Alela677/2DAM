@@ -1,6 +1,7 @@
-/META-INF/
-/View/
-/Views/
-/application/
-/images/
+/Controllers/
 /DAOS/
+/Models/
+/application/
+/META-INF/
+/Views/
+/images/

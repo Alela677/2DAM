@@ -44,14 +44,13 @@ public class Observador {
 				} else if (tipoEvento == ENTRY_MODIFY) {
 
 				}
+
 			}
 
 			boolean valid = key.reset();
 			if (!valid) {
 				break;
 			}
-
-			
 
 		}
 	}

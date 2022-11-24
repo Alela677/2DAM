@@ -21,8 +21,16 @@ public class ThreadImagenes extends Thread {
 			System.out.println(nombreHilo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
+	}
+
+	public String getNombreImagen() {
+		return nombreImagen;
+	}
+
+	public String getNombreHilo() {
+		return nombreHilo;
 	}
 
 }

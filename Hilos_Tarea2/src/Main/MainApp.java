@@ -11,6 +11,7 @@ public class MainApp {
 
 		ThreadObservador threadObserva = new ThreadObservador();
 		threadObserva.start();
-
+		
+		
 	}
 }

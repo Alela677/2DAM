@@ -13,6 +13,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
 import java.util.List;
 
 import Properties.FicheroPropiedades;
@@ -23,7 +24,7 @@ public class ThreadObservador extends Thread {
 	private String nombreHilo;
 	private String nombreImagen;
 	private int contadorHilo = 1;
-	
+
 	public ThreadObservador() {
 		super();
 	}
@@ -40,7 +41,8 @@ public class ThreadObservador extends Thread {
 
 			System.out.println("Iniciado observacion " + dir.getFileName());
 
-			while (true) {
+			for (;;) {
+
 				WatchKey key;
 				key = watcher.take();
 
@@ -54,35 +56,33 @@ public class ThreadObservador extends Thread {
 					if (tipoEvento == OVERFLOW) {
 						continue;
 					} else if (tipoEvento == ENTRY_CREATE) {
-						
-						
+
 						numeroImagen = listaEventos.size();
 						nombreImagen = filename.toString();
-						
-						Thread[] works = new Thread[numeroImagen];
 
-						for (int i = 0; i < works.length; i++) {
-							nombreHilo = "Hilo" + contadorHilo;
-							Thread nuevo =new ThreadImagenes(nombreImagen,nombreHilo); 
-							works[i] = nuevo;
-							contadorHilo++;
-							works[i].start();
-							
-							
+						if (numeroImagen > 0) {
+							for (int i = 0; i < numeroImagen; i++) {
+								nombreHilo = "Hilo" + contadorHilo;
+								Thread nuevo = new ThreadImagenes(nombreImagen, nombreHilo);
+								nuevo.start();
+								contadorHilo++;
+
+							}
+
 						}
 
-						for (int i = 0; i < works.length; i++) {
-							works[i].join();
-						}
-						
-					} 
+					} else if (tipoEvento == ENTRY_DELETE) {
+						contadorHilo = 1;
+						numeroImagen = 0;
+					}
 				}
 
+				listaEventos.clear();
 				boolean valid = key.reset();
 				if (!valid) {
 					break;
 				}
-				
+
 			}
 		} catch (
 
@@ -90,14 +90,6 @@ public class ThreadObservador extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public int getNumeroImagen() {
-		return numeroImagen;
-	}
-
-	public String getNombreImagen() {
-		return nombreImagen;
 	}
 
 }
