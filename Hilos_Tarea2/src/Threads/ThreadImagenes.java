@@ -17,7 +17,7 @@ public class ThreadImagenes extends Thread {
 			BufferedImage.imagen(nombreImagen);
 
 		} catch (Exception e) {
-			System.out.println("ERROR: EL HILO CON LA IMAGEN NO SE PUEDO EJECUTAR");
+			System.out.println("ERROR: EL HILO CON LA IMAGEN NO SE PUDO EJECUTAR");
 
 		}
 	}

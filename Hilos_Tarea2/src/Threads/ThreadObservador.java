@@ -35,13 +35,13 @@ public class ThreadObservador extends Thread {
 			WatchKey key = directorio.register(service, ENTRY_CREATE, ENTRY_DELETE);
 			System.out.println("Observando " + directorio.toString());
 			while (true) {
-				
+
 				for (WatchEvent<?> event : key.pollEvents()) {
-					System.out.println(event.kind());
+
 					Kind<?> tipoevento = event.kind();
 					Path fichero = directorio.resolve((Path) event.context());
 					nombreImagen = fichero.toString().split("\\\\")[1];
-
+					System.out.println(tipoevento + " - " + nombreImagen);
 					if (tipoevento == ENTRY_CREATE) {
 
 						Thread nuevoHilo = new ThreadImagenes(nombreImagen);
