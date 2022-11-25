@@ -13,17 +13,13 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.ArrayList;
-import java.util.List;
 
 import Properties.FicheroPropiedades;
 
 public class ThreadObservador extends Thread {
 
-	private int numeroImagen;
-	private String nombreHilo;
 	private String nombreImagen;
-	private int contadorHilo = 1;
+	private int contadorEventos = 0;
 
 	public ThreadObservador() {
 		super();
@@ -33,63 +29,35 @@ public class ThreadObservador extends Thread {
 	public void run() {
 
 		try {
-			WatchService watcher = FileSystems.getDefault().newWatchService();
+			WatchService service = FileSystems.getDefault().newWatchService();
+			Path directorio = Paths.get(FicheroPropiedades.getEntrada());
 
-			Path dir = Paths.get(FicheroPropiedades.getEntrada());
+			WatchKey key = directorio.register(service, ENTRY_CREATE, ENTRY_DELETE);
+			System.out.println("Observando " + directorio.toString());
+			while (true) {
+				
+				for (WatchEvent<?> event : key.pollEvents()) {
+					System.out.println(event.kind());
+					Kind<?> tipoevento = event.kind();
+					Path fichero = directorio.resolve((Path) event.context());
+					nombreImagen = fichero.toString().split("\\\\")[1];
 
-			dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE);
+					if (tipoevento == ENTRY_CREATE) {
 
-			System.out.println("Iniciado observacion " + dir.getFileName());
+						Thread nuevoHilo = new ThreadImagenes(nombreImagen);
+						nuevoHilo.start();
 
-			for (;;) {
+						sleep(2000);
 
-				WatchKey key;
-				key = watcher.take();
+					} else if (tipoevento == ENTRY_DELETE) {
 
-				List<WatchEvent<?>> listaEventos = key.pollEvents();
-
-				for (WatchEvent<?> evento : listaEventos) {
-					Kind<?> tipoEvento = evento.kind();
-					Path filename = (Path) evento.context();
-					System.out.println(tipoEvento.name() + " : " + filename);
-
-					if (tipoEvento == OVERFLOW) {
-						continue;
-					} else if (tipoEvento == ENTRY_CREATE) {
-
-						numeroImagen = listaEventos.size();
-						nombreImagen = filename.toString();
-
-						if (numeroImagen > 0) {
-							for (int i = 0; i < numeroImagen; i++) {
-								nombreHilo = "Hilo" + contadorHilo;
-								Thread nuevo = new ThreadImagenes(nombreImagen, nombreHilo);
-								nuevo.start();
-								contadorHilo++;
-
-							}
-
-						}
-
-					} else if (tipoEvento == ENTRY_DELETE) {
-						contadorHilo = 1;
-						numeroImagen = 0;
 					}
 				}
 
-				listaEventos.clear();
-				boolean valid = key.reset();
-				if (!valid) {
-					break;
-				}
-
 			}
-		} catch (
-
-		Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-	}
 
+	}
 }

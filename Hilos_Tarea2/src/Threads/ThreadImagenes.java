@@ -5,32 +5,25 @@ import WatchService.BufferedImage;
 public class ThreadImagenes extends Thread {
 
 	private String nombreImagen;
-	private String nombreHilo;
-	
-	public ThreadImagenes(String nombreImg, String nombreHilo) {
-		this.nombreImagen = nombreImg;
-		this.nombreHilo =  nombreHilo;
-	}
 
+	public ThreadImagenes(String nombreImg) {
+		this.nombreImagen = nombreImg;
+	}
 	@Override
 	public void run() {
-		
+
 		try {
-			
+
 			BufferedImage.imagen(nombreImagen);
-			System.out.println(nombreHilo);
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			
+			System.out.println("ERROR: EL HILO CON LA IMAGEN NO SE PUEDO EJECUTAR");
+
 		}
 	}
 
 	public String getNombreImagen() {
 		return nombreImagen;
-	}
-
-	public String getNombreHilo() {
-		return nombreHilo;
 	}
 
 }
