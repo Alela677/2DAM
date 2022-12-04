@@ -21,19 +21,12 @@ public class UsuariosDAO {
 		user.add(new Usuarios(2, "David", "1234"));
 		user.add(new Usuarios(3, "Maria", "1234"));
 
-//		introducirUsuarios(user);
-		consultarUsuarios("Maria", "1234");
+		introducirUsuarios(user);
+		
 
 		
 	}
-//
-//	private static Session sesion() {
-//		StandardServiceRegistry sr = new StandardServiceRegistryBuilder().configure().build();
-//		SessionFactory sf = new MetadataSources(sr).buildMetadata().buildSessionFactory();
-//		Session sesion = sf.openSession();
-//		return sesion;
-//
-//	}
+
 
 	public static void introducirUsuarios(ArrayList<Usuarios> user) {
 		Session sesion =HibernateUtil.getSession();

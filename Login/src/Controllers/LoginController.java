@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import DAOS.UsuariosDAO;
 import Models.Usuarios;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,10 +18,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class LoginController {
-
+	
+	public static BorderPane root;
 	private Stage stage;
 
 	@FXML
@@ -49,7 +48,7 @@ public class LoginController {
 	private TextField txtUser;
 
 	@FXML
-	void logeo(MouseEvent event) {
+	void logeo(MouseEvent event) throws IOException {
 
 		String nombre = txtUser.getText();
 		String passwd = txtPassword.getText();
@@ -63,21 +62,17 @@ public class LoginController {
 		}
 
 		if (registrado == true) {
-			try {
-				FXMLLoader loader = new FXMLLoader(LoginController.class.getResource("../Views/PrincipalView.fxml"));
-				Parent root = loader.load();
-				Scene scene = new Scene(root);
-				PrincipalController controller = loader.getController();
-				Stage stage2 = new Stage();
-				stage.setScene(scene);
-				controller.init(stage2, this);
-				stage.show();
-				this.stage.close();
 
-			} catch (IOException e) {
+			FXMLLoader loade = new FXMLLoader(getClass().getResource("/Views/PrincipalView.fxml"));
+			root = loade.load();
+			PrincipalC control = loade.getController(); 
+			Scene escena = new Scene(root);
+			Stage stage = new Stage();
+			stage.setScene(escena);
+			control.init(stage,this,txtUser.getText(),root);
+			stage.show();
+			this.stage.close();
 
-				e.printStackTrace();
-			}
 		} else {
 			alertaError();
 		}
@@ -139,11 +134,6 @@ public class LoginController {
 		}
 	}
 
-	public void setStage(Stage primaryStage) {
-		stage = primaryStage;
-
-	}
-
 	public static void alertaError() {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("Error");
@@ -151,4 +141,12 @@ public class LoginController {
 		alert.showAndWait();
 
 	}
+
+	public void setStage(Stage primaryStage) {
+		stage = primaryStage;
+
+	}
+
+
+
 }

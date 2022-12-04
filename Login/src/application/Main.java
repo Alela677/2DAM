@@ -1,5 +1,7 @@
 package application;
 	
+
+
 import java.io.IOException;
 
 import Controllers.LoginController;
@@ -12,22 +14,15 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws IOException {
 		
-		
-		try {
-			FXMLLoader loader = new FXMLLoader(Main.class.getResource("../Views/LoginView.fxml"));
-			Parent root =loader.load();
-			Scene scene = new Scene(root);
-			primaryStage.setScene(scene);
-			LoginController controler = loader.getController();
-			controler.setStage(primaryStage);
-			primaryStage.show();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/LoginView.fxml"));
+		Parent root = loader.load();
+		Scene escena = new Scene(root);
+		primaryStage.setScene(escena);
+		LoginController controlador = loader.getController();
+		controlador.setStage(primaryStage);
+		primaryStage.show();
 		
 	}
 	
