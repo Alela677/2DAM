@@ -9,7 +9,7 @@ public class MainApp {
 	private static final String CONTENIDOCSS = "La cadena contiene comillas izquierda“ comilla simple izq‘ barra lateral izquierda\\  menor que< mayor que> un aspersan& un parentesis izq( y uno derecho ) y un barr lateral derecha/ ";
 	private static final String LITERALSQL = "Comillas izquierda“  comilla simple izq‘  barra lateral izquierda\\ un tanto porciento% y una barra baja_";
 	private static final String URL = "www.google.com/search?q=";
-	private static final String PRUEBACSS = "Prueba <6 y >j";
+	private static final String PRUEBACSS = "<2 y >h";
 
 	public static void main(String[] args) throws Exception {
 

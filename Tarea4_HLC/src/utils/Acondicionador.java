@@ -13,14 +13,14 @@ public class Acondicionador {
 	private static final String CSSPARENTESISDRCH = "\\)";
 	private static final String CSSPARENTESISIZQ = "\\(";
 
-	private static String cssbarraizq = "\\\\005C";
-	private static String csscomillasizq = "\\\\201C";
-	private static String csscomillasdrch = "\\\\2018";
+	private static String cssbarraizq = "\\005C";
+	private static String csscomillasizq = "\\201C";
+	private static String csscomilladrch = "\\2018";
 	private static String cssmenor = null;
 	private static String cssamyor = null;
-	private static String cssaspersan = "\\\\0026";
-	private static String cssparentesisdrch = "\\\\0029";
-	private static String cssparentesisizq = "\\\\0028";
+	private static String cssaspersan = null;
+	private static String cssparentesisdrch = "\\0029";
+	private static String cssparentesisizq = "\\0028";
 
 	private static final String ESPACIO = " ";
 
@@ -40,26 +40,45 @@ public class Acondicionador {
 		String[] simbolos = { "\\", "“", "‘", "<", "&", "(", ")", "/", ">" };
 		int posicionCaracter = 0;
 		String caracterComprobr = null;
+
 		for (int i = 0; i < cadena.length(); i++) {
 			for (int j = 0; j < simbolos.length; j++) {
+				posicionCaracter = cadena.indexOf(simbolos[j]);
+				caracterComprobr = String.valueOf(cadena.charAt(posicionCaracter + 1));
 				if (cadena.contains(simbolos[j])) {
-					posicionCaracter = cadena.indexOf(simbolos[j]);
-					caracterComprobr = String.valueOf(cadena.charAt(posicionCaracter) + 1);
 
-					if(esUnNumero(caracterComprobr)) {
-						cssmenor = "\\\\003C" + ESPACIO;
-						cssamyor = "\\\\003E" + ESPACIO;
-					} else if (!esUnNumero(caracterComprobr)) {
-						cssamyor = "\\\\003E";
-						cssmenor = "\\\\003C";
+					if (esUnNumero(caracterComprobr)) {
+						
+						switch (String.valueOf(cadena.charAt(posicionCaracter))) {
+						case "<":
+							cadena = cadena.replace("<", "\\003C ");
+							break;
+
+						case ">":
+							cadena = cadena.replace(">", "\\003E ");
+							break;
+
+						default:
+							break;
+						}
+
+					} else {
+						
+						switch (String.valueOf(cadena.charAt(posicionCaracter))) {
+						case ">":
+							cadena = cadena.replace(">", "\\003E");
+							break;
+						case "<":
+							cadena = cadena.replace("<", "\\003C");
+							break;
+						default:
+							break;
+						}
 					}
 				}
-
 			}
-
 		}
-
-		return cadena.replace("<", cssmenor).replace(">", cssamyor);
+		return cadena;
 	}
 
 	public static String acondicionaURL(String cadena) throws Exception {
