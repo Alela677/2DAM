@@ -130,48 +130,31 @@ public class Acondicionador {
 
 	// Metodo acondicionamiento URL con la clase URLEncoder
 	public static String acondicionaURL(String cadena) throws Exception {
-		String[] simbolos = { "\\", "/", "Ω", ";", ":", "&", " " };
-		char simboloEncontrado = 0;
+		String[] simbolos = { "\\\\", "/", "Ω", ";", ":", "&", " ", "\"" };
+		String simboloEncontrado = null;
 		int simboloPos = 0;
+		String codigoHexadecimal = null;
+		byte[] byteSimbolo = null;
 
 		for (int i = 0; i < cadena.length(); i++) {
 			for (int j = 0; j < simbolos.length; j++) {
 
 				if (cadena.contains(simbolos[j])) {
 					simboloPos = cadena.indexOf(simbolos[j]);
-					simboloEncontrado = cadena.charAt(simboloPos);
-					switch (String.valueOf(simboloEncontrado)) {
+					simboloEncontrado = String.valueOf(cadena.charAt(simboloPos));
+					byteSimbolo = simboloEncontrado.getBytes();
 
-					case "/":
-						cadena = cadena.replaceAll("/", "%2F");
-						break;
-					case "Ω":
-						cadena = cadena.replaceAll("Ω", "%CE%A9");
-						break;
-					case " ":
-						cadena = cadena.replaceAll(" ", "%20");
-						break;
-					case ";":
-						cadena = cadena.replaceAll(";", "%3B");
-						break;
-					case ":":
-						cadena = cadena.replaceAll(":", "%3A");
-						break;
-					case "\\\\":
-						cadena = cadena.replaceAll("\\\\", "%5C");
-						break;
+					for (int j2 = 0; j2 < byteSimbolo.length; j2++) {
+						System.out.println(codigoHexadecimal);
+						codigoHexadecimal = Integer.toHexString(byteSimbolo[j2]);
 
-					case "&":
-						cadena = cadena.replaceAll("&", "%26S");
-						break;
-
-					default:
-						break;
+						cadena = cadena.replaceAll(simboloEncontrado, "%" + codigoHexadecimal.toUpperCase());
 					}
 
 				}
 			}
 		}
+
 		return cadena;
 	}
 

@@ -8,7 +8,7 @@ public class MainApp {
 	private static final String ELEMENTOSHTML = "Esto > es mayor que esto < y esto es un aspersan &";
 	private static final String CONTENIDOCSS = "\"1 h ' o \\ l < a & C (a )r /1 ola";
 	private static final String LITERALSQL = "H\"'\\%_ ola";
-	private static final String URL = "\"@\\/ Ω\"";
+	private static final String URL = "@\\/ Ω";
 
 	public static void main(String[] args) throws Exception {
 
