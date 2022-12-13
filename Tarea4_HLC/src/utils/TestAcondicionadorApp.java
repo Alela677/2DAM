@@ -41,7 +41,7 @@ public class TestAcondicionadorApp {
 		}
 
 		if (!assertIgual(Acondicionador.acondicionaURL("@\\/ Ω"), "@%5C%2F%20%CE%A9", "acondicionaUrl2")) {
-//			errores++;												
+			errores++;												
 		}
 
 		if (!assertIgual(Acondicionador.acondicionaLiteralSQL("Hola Caracola"), "Hola Caracola",

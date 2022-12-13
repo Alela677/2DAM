@@ -1,8 +1,5 @@
 package utils;
 
-import java.net.URLEncoder;
-import java.util.Base64.Encoder;
-
 public class Acondicionador {
 
 	private static final String CSSBARRAIZQ = "\\";
@@ -130,7 +127,7 @@ public class Acondicionador {
 
 	// Metodo acondicionamiento URL con la clase URLEncoder
 	public static String acondicionaURL(String cadena) throws Exception {
-		String[] simbolos = { "\\\\", "/", "Ω", ";", ":", "&", " ", "\"" };
+		String[] simbolos = { "\\", "/", "Ω", ";", ":", "&", " ", "\"", "}", "{", "(", ")" };
 		String simboloEncontrado = null;
 		int simboloPos = 0;
 		String codigoHexadecimal = null;
@@ -140,17 +137,22 @@ public class Acondicionador {
 			for (int j = 0; j < simbolos.length; j++) {
 
 				if (cadena.contains(simbolos[j])) {
+
 					simboloPos = cadena.indexOf(simbolos[j]);
 					simboloEncontrado = String.valueOf(cadena.charAt(simboloPos));
-					byteSimbolo = simboloEncontrado.getBytes();
+					byteSimbolo = simboloEncontrado.getBytes("UTF-8");
 
-					for (int j2 = 0; j2 < byteSimbolo.length; j2++) {
-						System.out.println(codigoHexadecimal);
-						codigoHexadecimal = Integer.toHexString(byteSimbolo[j2]);
+					for (int b = 0; b < byteSimbolo.length; b++) {
+						codigoHexadecimal = Integer.toHexString(byteSimbolo[b]);
 
-						cadena = cadena.replaceAll(simboloEncontrado, "%" + codigoHexadecimal.toUpperCase());
+						if (codigoHexadecimal.contains("ffffff")) {
+							codigoHexadecimal = codigoHexadecimal.split("ffffff")[1];
+						}
+
+						System.out.println(simboloEncontrado + " " + codigoHexadecimal);
+
+						cadena = cadena.replace(simboloEncontrado, "%" + codigoHexadecimal.toUpperCase());
 					}
-
 				}
 			}
 		}
