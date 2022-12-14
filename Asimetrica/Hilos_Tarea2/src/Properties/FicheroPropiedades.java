@@ -7,23 +7,20 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class FicheroPropiedades {
-	
-	// Valores estaticos claves del fichero propiedades
+
 	private static final String FICHERO = "config.properties";
 	private static final String KEYENTRADA = "inputfolder";
 	private static final String KEYSALIDA = "outputfolder";
 	private static final String KEYWMAXIMO = "maxwidth";
 	private static final String KEYHMAXIMO = "maxheight";
-	
-	// Atributos globales para leer la propiedades del fichero 
+
 	private static Properties propiedades = new Properties();
 	private static InputStream leerFichero;
 
+	public static void main(String[] args) {
+		System.out.println(getWMaximo()); 
+	}
 	
-	/**
-	 * Metodo que devuelve el valor de la clave inputfolder del fichero de properties
-	 * @return valor inputfolder
-	 */
 	public static String getEntrada() {
 		try {
 			
@@ -40,12 +37,7 @@ public class FicheroPropiedades {
 		}
 		return null;
 	}
-	
-	
-	/**
-	 * Metodo que devuelve el valor de la clave outputfolder del fichero de properties
-	 * @return valor ouputfolder
-	 */
+
 	public static String getSalida() {
 		try {
 			leerFichero = new FileInputStream(FICHERO);
@@ -62,10 +54,7 @@ public class FicheroPropiedades {
 		return null;
 	}
 	
-	/**
-	 * Metodo que devuelve el valor de la clave maxwidth del fichero de properties
-	 * @return valor maxwidth
-	 */
+	
 	public static int getWMaximo() {
 		try {
 			leerFichero = new FileInputStream(FICHERO);
@@ -83,10 +72,7 @@ public class FicheroPropiedades {
 		return 0;
 	}
 	
-	/**
-	 * Metodo que devuelve el valor de la clave maxheigth del fichero de properties
-	 * @return valor maxheigth
-	 */
+	
 	public static int getHaximo() {
 		try {
 			leerFichero = new FileInputStream(FICHERO);

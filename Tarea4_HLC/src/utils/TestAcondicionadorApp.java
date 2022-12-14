@@ -33,6 +33,7 @@ public class TestAcondicionadorApp {
 
 		if (!assertIgual(Acondicionador.acondicionaContenidoCSS("\"1 h ' o \\ l < a & C (a )r /1 ola"),
 				"\\22 1 h \\27 o \\5c l \\3c a \\26 C \\28 a \\29r \\2f 1 ola", "acondicionaContenidoCss2")) {
+//				  \\22 1 h \\27 o \\5c l \\3c a \\26 C \\28 a \\29r \\2f 1 ola
 			errores++;
 		}
 
